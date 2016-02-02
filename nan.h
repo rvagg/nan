@@ -49,6 +49,7 @@
 #include <cstring>
 #include <climits>
 #include <cstdlib>
+#include <deque>
 #if defined(_MSC_VER)
 # pragma warning( push )
 # pragma warning( disable : 4530 )
@@ -1599,39 +1600,42 @@ class Callback {
 
 /* abstract */ class AsyncProgressWorker : public AsyncWorker {
  public:
+  typedef std::deque<std::string> async_queue_t;
+
   explicit AsyncProgressWorker(Callback *callback_)
-      : AsyncWorker(callback_), asyncdata_(NULL), asyncsize_(0) {
-    async = new uv_async_t;
+      : AsyncWorker(callback_) {
     uv_async_init(
         uv_default_loop()
-      , async
+      , &async
       , AsyncProgress_
     );
-    async->data = this;
+    async.data = this;
 
     uv_mutex_init(&async_lock);
   }
 
   virtual ~AsyncProgressWorker() {
     uv_mutex_destroy(&async_lock);
+  }
 
-    if (asyncdata_) {
-      delete[] asyncdata_;
-    }
+  virtual void WorkComplete() {
+    WorkProgress();
+    AsyncWorker::WorkComplete();
   }
 
   void WorkProgress() {
-    uv_mutex_lock(&async_lock);
-    char *data = asyncdata_;
-    size_t size = asyncsize_;
-    asyncdata_ = NULL;
-    uv_mutex_unlock(&async_lock);
-
     // Dont send progress events after we've already completed.
     if (callback) {
-        HandleProgressCallback(data, size);
+      uv_mutex_lock(&async_lock);
+      while (!queue.empty()) {
+        const std::string& async_data = queue.front();
+        uv_mutex_unlock(&async_lock);
+        HandleProgressCallback(async_data.data(), async_data.size());
+        uv_mutex_lock(&async_lock);
+        queue.pop_front();
+      }
+      uv_mutex_unlock(&async_lock);
     }
-    delete[] data;
   }
 
   class ExecutionProgress {
@@ -1639,7 +1643,7 @@ class Callback {
    public:
     // You could do fancy generics with templates here.
     void Send(const char* data, size_t size) const {
-        that_->SendProgress_(data, size);
+      that_->SendProgress_(data, size);
     }
 
    private:
@@ -1652,29 +1656,20 @@ class Callback {
   virtual void HandleProgressCallback(const char *data, size_t size) = 0;
 
   virtual void Destroy() {
-      uv_close(reinterpret_cast<uv_handle_t*>(async), AsyncClose_);
+    uv_close(reinterpret_cast<uv_handle_t*>(&async), AsyncClose_);
   }
 
  private:
   void Execute() /*final override*/ {
-      ExecutionProgress progress(this);
-      Execute(progress);
+    ExecutionProgress progress(this);
+    Execute(progress);
   }
 
   void SendProgress_(const char *data, size_t size) {
-    char *new_data = new char[size];
-    memcpy(new_data, data, size);
-
     uv_mutex_lock(&async_lock);
-    char *old_data = asyncdata_;
-    asyncdata_ = new_data;
-    asyncsize_ = size;
+    queue.push_back(std::string(data, size));
     uv_mutex_unlock(&async_lock);
-
-    if (old_data) {
-      delete[] old_data;
-    }
-    uv_async_send(async);
+    uv_async_send(&async);
   }
 
   NAN_INLINE static NAUV_WORK_CB(AsyncProgress_) {
@@ -1686,14 +1681,12 @@ class Callback {
   NAN_INLINE static void AsyncClose_(uv_handle_t* handle) {
     AsyncProgressWorker *worker =
             static_cast<AsyncProgressWorker*>(handle->data);
-    delete reinterpret_cast<uv_async_t*>(handle);
     delete worker;
   }
 
-  uv_async_t *async;
+  uv_async_t async;
+  async_queue_t queue;
   uv_mutex_t async_lock;
-  char *asyncdata_;
-  size_t asyncsize_;
 };
 
 NAN_INLINE void AsyncExecute (uv_work_t* req) {
