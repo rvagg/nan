@@ -51,6 +51,11 @@
 # error This version of node/NAN/v8 requires a C++11 compiler
 #endif
 
+#if defined(__GNUC__)  // GCC
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wcast-function-type"
+#endif
+
 #include <uv.h>
 #include <node.h>
 #include <node_buffer.h>
@@ -2886,5 +2891,9 @@ MakeMaybe(MaybeMaybe<T> v) {
 #include "nan_json.h"  // NOLINT(build/include)
 
 }  // end of namespace Nan
+
+#if defined(__GNUC__)
+#pragma GCC diagnostic pop
+#endif
 
 #endif  // NAN_H_
