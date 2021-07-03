@@ -161,6 +161,9 @@ struct Factory<v8::String> : MaybeFactoryBase<v8::String> {
   static inline return_t New(const char *value, int length = -1);
   static inline return_t New(const uint16_t *value, int length = -1);
   static inline return_t New(std::string const& value);
+  #if NAN_ENABLE_STRING_VIEW
+  static inline return_t New(std::string_view value);
+  #endif
 
   static inline return_t New(v8::String::ExternalStringResource * value);
   static inline return_t New(ExternalOneByteStringResource * value);
@@ -288,6 +291,14 @@ imp::Factory<v8::Number>::return_t
 New(double value) {
   return New<v8::Number>(value);
 }
+
+#if NAN_ENABLE_STRING_VIEW
+inline
+imp::Factory<v8::String>::return_t
+New(std::string_view value) {
+  return New<v8::String>(value.data(), value.length());
+}
+#endif
 
 inline
 imp::Factory<v8::String>::return_t

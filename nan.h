@@ -52,6 +52,12 @@
 # error This version of node/NAN/v8 requires a C++11 compiler
 #endif
 
+#define NAN_HAS_CPLUSPLUS_17 (__cplusplus >= 201703L)
+
+#ifndef NAN_ENABLE_STRING_VIEW
+# define NAN_ENABLE_STRING_VIEW NAN_HAS_CPLUSPLUS_17
+#endif
+
 #include <uv.h>
 #include <node.h>
 #include <node_buffer.h>
@@ -72,6 +78,9 @@
 # include <queue>
 # include <string>
 # include <vector>
+#endif
+#if NAN_ENABLE_STRING_VIEW
+# include <string_view>
 #endif
 
 // uv helpers
