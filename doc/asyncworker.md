@@ -13,7 +13,8 @@
 `Nan::AsyncWorker` is an _abstract_ class that you can subclass to have much of the annoying asynchronous queuing and handling taken care of for you. It can even store arbitrary V8 objects for you and have them persist while the asynchronous work is in progress.
 
 This class internally handles the details of creating an [`AsyncResource`][AsyncResource], and running the callback in the
-correct async context. To be able to identify the async resources created by this class in async-hooks, provide a
+correct async context. If you override `HandleOKCallback` or `HandleErrorCallback`, you must also restore the async context.
+To be able to identify the async resources created by this class in async-hooks, provide a
 `resource_name` to the constructor. It is recommended that the module name be used as a prefix to the `resource_name` to avoid
 collisions in the names. For more details see [`AsyncResource`][AsyncResource] documentation.  The `resource_name` needs to stay valid for the lifetime of the worker instance.
 
