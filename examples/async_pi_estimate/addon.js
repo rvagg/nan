@@ -27,7 +27,7 @@ function runSync() {
 
 function runAsync() {
   // how many batches should we split the work in to?
-  var batches = process.argv[3] || 16;
+  var batches = (+process.argv[3]) || 16;
   var ended = 0;
   var total = 0;
   var start = Date.now();
