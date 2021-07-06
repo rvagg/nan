@@ -156,7 +156,7 @@ See the V8 documentation for [`CopyablePersistentTraits`](https://v8docs.nodesou
 <a name="api_nan_persistent"></a>
 ### Nan::Persistent
 
-A type of `PersistentBase` which allows copy and assignment. Copy, assignment and destructor behavior is controlled by the traits class `M`.
+A type of `PersistentBase` which does not allows copy nor assignment. Copy, assignment and destructor behavior is controlled by the traits class `M`.
 
 Definition:
 
