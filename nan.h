@@ -49,7 +49,7 @@
 #endif
 
 #if NODE_MODULE_VERSION >= IOJS_3_0_MODULE_VERSION && !NAN_HAS_CPLUSPLUS_11
-# error This version of node/NAN/v8 requires a C++11 compiler
+# error This version of node/NAN/v8 requires a C++11 compiler (at least g++ 4.8 or clang++ 3.4)
 #endif
 
 #include <uv.h>
