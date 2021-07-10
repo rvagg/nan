@@ -9,7 +9,7 @@ Native Abstractions for Node.js
 
 [![NPM](https://nodei.co/npm/nan.png?downloads=true&downloadRank=true)](https://nodei.co/npm/nan/) [![NPM](https://nodei.co/npm-dl/nan.png?months=6&height=3)](https://nodei.co/npm/nan/)
 
-[![Build Status](https://api.travis-ci.org/nodejs/nan.svg?branch=master)](https://travis-ci.org/nodejs/nan)
+[![Build Status](https://api.travis-ci.com/nodejs/nan.svg?branch=master)](https://travis-ci.com/nodejs/nan)
 [![Build status](https://ci.appveyor.com/api/projects/status/kh73pbm9dsju7fgh)](https://ci.appveyor.com/project/RodVagg/nan)
 
 Thanks to the crazy changes in V8 (and some in Node core), keeping native addons compiling happily across versions, particularly 0.10 to 0.12 to 4.0, is a minor nightmare. The goal of this project is to store all logic necessary to develop native Node.js addons without having to inspect `NODE_MODULE_VERSION` and get yourself into a macro-tangle.
@@ -205,10 +205,11 @@ The `Nan::MaybeLocal` and `Nan::Maybe` types are monads that encapsulate `v8::Lo
 
 ### Script
 
-NAN provides a `v8::Script` helpers as the API has changed over the supported versions of V8.
+NAN provides `v8::Script` helpers as the API has changed over the supported versions of V8.
 
  - <a href="doc/script.md#api_nan_compile_script"><b><code>Nan::CompileScript()</code></b></a>
  - <a href="doc/script.md#api_nan_run_script"><b><code>Nan::RunScript()</code></b></a>
+ - <a href="doc/script.md#api_nan_script_origin"><b><code>Nan::ScriptOrigin</code></b></a>
 
 
 ### JSON

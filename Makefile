@@ -32,6 +32,7 @@ LINT_SOURCES = \
 	nan_persistent_12_inl.h \
 	nan_persistent_pre_12_inl.h \
 	nan_private.h \
+	nan_scriptorigin.h \
 	nan_string_bytes.h \
 	nan_weak.h \
 	test/cpp/accessors.cpp \
@@ -111,5 +112,6 @@ $(ADDONS): nan.h nan_new.h nan_implementation_pre_12_inl.h nan_implementation_12
 		nan_define_own_property_helper.h \
 		nan_json.h nan_maybe_43_inl.h nan_maybe_pre_43_inl.h \
 		nan_persistent_12_inl.h nan_persistent_pre_12_inl.h nan_private.h \
-		nan_weak.h nan_string_bytes.h test/binding.gyp $(SOURCES)
+		nan_weak.h nan_scriptorigin.h nan_string_bytes.h \
+		test/binding.gyp $(SOURCES)
 	cd test/ && ../node_modules/.bin/node-gyp rebuild

@@ -1,6 +1,6 @@
 ## JSON
 
-The _JSON_ object provides the c++ versions of the methods offered by the `JSON` object in javascript. V8 exposes these methods via the `v8::JSON` object.
+The _JSON_ object provides the C++ versions of the methods offered by the `JSON` object in javascript. V8 exposes these methods via the `v8::JSON` object.
 
  - <a href="#api_nan_json_parse"><b><code>Nan::JSON.Parse</code></b></a>
  - <a href="#api_nan_json_stringify"><b><code>Nan::JSON.Stringify</code></b></a>
