@@ -41,6 +41,8 @@
 #define NODE_12_0_MODULE_VERSION 72
 #define NODE_13_0_MODULE_VERSION 79
 #define NODE_14_0_MODULE_VERSION 83
+#define NODE_15_0_MODULE_VERSION 88
+#define NODE_16_0_MODULE_VERSION 93
 
 #ifdef _MSC_VER
 # define NAN_HAS_CPLUSPLUS_11 (_MSC_VER >= 1800)
@@ -2892,6 +2894,10 @@ MakeMaybe(MaybeMaybe<T> v) {
 //=== JSON =====================================================================
 
 #include "nan_json.h"  // NOLINT(build/include)
+
+//=== ScriptOrigin =============================================================
+
+#include "nan_scriptorigin.h"  // NOLINT(build/include)
 
 }  // end of namespace Nan
 

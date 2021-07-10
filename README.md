@@ -205,10 +205,11 @@ The `Nan::MaybeLocal` and `Nan::Maybe` types are monads that encapsulate `v8::Lo
 
 ### Script
 
-NAN provides a `v8::Script` helpers as the API has changed over the supported versions of V8.
+NAN provides `v8::Script` helpers as the API has changed over the supported versions of V8.
 
  - <a href="doc/script.md#api_nan_compile_script"><b><code>Nan::CompileScript()</code></b></a>
  - <a href="doc/script.md#api_nan_run_script"><b><code>Nan::RunScript()</code></b></a>
+ - <a href="doc/script.md#api_nan_script_origin"><b><code>Nan::ScriptOrigin</code></b></a>
 
 
 ### JSON
